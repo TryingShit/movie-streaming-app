@@ -10,7 +10,7 @@ export function useAdBlocker(): boolean {
         const response = await fetch(adUrl, { method: 'HEAD' });
         setAdBlocked(!response.ok);
       } catch (err: unknown) {
-        // If any error occurs (likely due to ad blocker interference), assume ad blocking is enabled.
+        // On error (likely due to ad blocker interference), assume ad blocking is enabled.
         setAdBlocked(true);
       }
     }

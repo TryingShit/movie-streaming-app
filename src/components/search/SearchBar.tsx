@@ -23,7 +23,7 @@ export function SearchBar({ contentType, onSelectContent }: SearchBarProps) {
     // Handle clicks outside of the search results
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        resultsRef.current && 
+        resultsRef.current &&
         !resultsRef.current.contains(event.target as Node) &&
         inputRef.current &&
         !inputRef.current.contains(event.target as Node)
@@ -62,9 +62,9 @@ export function SearchBar({ contentType, onSelectContent }: SearchBarProps) {
       type: contentType,
       posterPath: item.poster_path,
       overview: item.overview,
-      releaseDate: item.release_date || item.first_air_date
+      releaseDate: item.release_date || item.first_air_date,
     };
-    
+
     onSelectContent(selectedContent);
     setShowResults(false);
     setQuery(''); // Clear search after selection
@@ -99,7 +99,7 @@ export function SearchBar({ contentType, onSelectContent }: SearchBarProps) {
       </div>
 
       {showResults && (
-        <div 
+        <div
           ref={resultsRef}
           className="absolute z-50 mt-1 w-full bg-background border rounded-md shadow-lg max-h-96 overflow-auto"
         >
@@ -108,7 +108,7 @@ export function SearchBar({ contentType, onSelectContent }: SearchBarProps) {
           ) : results.length > 0 ? (
             <div className="p-2">
               {results.map((item) => (
-                <div 
+                <div
                   key={item.id}
                   className="flex items-start gap-3 p-2 hover:bg-accent rounded cursor-pointer"
                   onClick={() => handleSelect(item)}
@@ -128,8 +128,8 @@ export function SearchBar({ contentType, onSelectContent }: SearchBarProps) {
                       {item.title || item.name}
                     </h3>
                     <p className="text-xs text-muted-foreground">
-                      {item.release_date || item.first_air_date 
-                        ? new Date(item.release_date || item.first_air_date || '').getFullYear() 
+                      {item.release_date || item.first_air_date
+                        ? new Date(item.release_date || item.first_air_date || '').getFullYear()
                         : 'Unknown year'}
                     </p>
                     <p className="text-xs line-clamp-2 mt-1 text-muted-foreground">
