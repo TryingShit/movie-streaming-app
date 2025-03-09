@@ -9,8 +9,8 @@ export function useAdBlocker(): boolean {
         const adUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
         const response = await fetch(adUrl, { method: 'HEAD' });
         setAdBlocked(!response.ok);
-      } catch (err: unknown) {
-        // On error (likely due to ad blocker interference), assume ad blocking is enabled.
+      } catch {
+        // If an error occurs (likely due to ad blocker interference), assume ad blocking is enabled.
         setAdBlocked(true);
       }
     }
