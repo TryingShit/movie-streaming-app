@@ -12,7 +12,7 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Use our custom ad blocker hook without storing its value since we're not using it directly.
+  // Use our custom ad blocker hook (side effects run internally)
   useAdBlocker();
   
   // Reset loading state when content changes
@@ -40,6 +40,7 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
         )}
         
         <iframe
+          key={selectedContent ? selectedContent.id : 'blank'}  // Force remount on change
           ref={iframeRef}
           src={getEmbedUrl()}
           allowFullScreen
