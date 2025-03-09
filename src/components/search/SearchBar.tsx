@@ -150,5 +150,5 @@ export function SearchBar({ contentType, onSelectContent }: SearchBarProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
