@@ -12,8 +12,8 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Use our custom ad blocker hook without any arguments.
-  const adBlocked = useAdBlocker();
+  // Use our custom ad blocker hook without storing its value since we're not using it directly.
+  useAdBlocker();
   
   // Reset loading state when content changes
   useEffect(() => {
