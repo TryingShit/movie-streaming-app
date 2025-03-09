@@ -12,7 +12,7 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Use our custom ad blocker hook (side effects run internally)
+  // Use our custom ad blocker hook without storing its return value.
   useAdBlocker();
   
   // Reset loading state when content changes
@@ -20,10 +20,15 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
     setIsLoading(true);
   }, [selectedContent]);
 
-  // Construct the embed URL based on the selected content
+  // Construct the embed URL based on the selected content.
+  // For movies, use the new URL format with query parameter "tmdb".
   const getEmbedUrl = () => {
     if (!selectedContent) return 'about:blank';
-    return `https://vidsrc.net/embed/${selectedContent.type}/${selectedContent.id}`;
+    if (selectedContent.type === 'movie') {
+      return `https://vidsrc.net/embed/movie?tmdb=${selectedContent.id}/`;
+    }
+    // Otherwise, assume TV show
+    return `https://vidsrc.net/embed/tv/${selectedContent.id}`;
   };
 
   const handleIframeLoad = () => {
@@ -40,7 +45,7 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
         )}
         
         <iframe
-          key={selectedContent ? selectedContent.id : 'blank'}  // Force remount on change
+          key={selectedContent ? selectedContent.id : 'blank'} // Force remount on change
           ref={iframeRef}
           src={getEmbedUrl()}
           allowFullScreen
