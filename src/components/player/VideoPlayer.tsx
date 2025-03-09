@@ -12,8 +12,8 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Use our custom ad blocker hook
-  useAdBlocker(iframeRef);
+  // Use our custom ad blocker hook without any arguments.
+  const adBlocked = useAdBlocker();
   
   // Reset loading state when content changes
   useEffect(() => {
@@ -23,7 +23,6 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
   // Construct the embed URL based on the selected content
   const getEmbedUrl = () => {
     if (!selectedContent) return 'about:blank';
-    
     return `https://vidsrc.net/embed/${selectedContent.type}/${selectedContent.id}`;
   };
 
