@@ -26,7 +26,7 @@ export function VideoPlayer({ selectedContent }: VideoPlayerProps) {
   const getEmbedUrl = () => {
     if (!selectedContent) return 'about:blank';
     if (selectedContent.type === 'movie') {
-      return `https://vidsrc.net/embed/movie/${selectedContent.id}`;
+      return `https://vidsrc.xyz/embed/movie/${selectedContent.id}`;
     }
     return `https://vidsrc.net/embed/tv/${selectedContent.id}`;
   };
