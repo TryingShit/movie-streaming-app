@@ -1,62 +1,25 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
-/**
- * Custom hook to handle iframe ad blocking and prevent redirects
- * @param iframeRef Reference to the iframe element
- */
-export function useAdBlocker(iframeRef: React.RefObject<HTMLIFrameElement>) {
-  const popupCount = useRef(0);
-  
+export function useAdBlocker(): boolean {
+  const [adBlocked, setAdBlocked] = useState<boolean>(false);
+
   useEffect(() => {
-    if (!iframeRef.current) return;
-    
-    const iframe = iframeRef.current;
-    
-    // Function to block popup attempts
-    const blockPopups = () => {
-      popupCount.current += 1;
-      console.log(`Blocked popup attempt #${popupCount.current}`);
-      return false;
-    };
-
-    // Store the original window.open function
-    const originalWindowOpen = window.open;
-    
-    // Override window.open to prevent popups
-    window.open = function() {
-      return blockPopups() as any;
-    };
-    
-    // Add event listeners to prevent navigation redirects
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      // Only prevent if it seems to be an ad redirect
-      if (popupCount.current > 0) {
-        e.preventDefault();
-        return (e.returnValue = '');
-      }
-    };
-    
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    
-    // Try to add a load event to the iframe to block redirects within the iframe
-    iframe.addEventListener('load', () => {
+    async function checkAdBlocker(): Promise<void> {
       try {
-        // Access iframe content (may be restricted due to same-origin policy)
-        const iframeWindow = iframe.contentWindow;
-        if (iframeWindow) {
-          // Override potential redirect methods
-          iframeWindow.open = blockPopups as any;
-        }
-      } catch (error) {
-        // Cannot access iframe content due to same-origin policy
-        console.log("Cannot access iframe content due to same-origin policy");
+        // Example detection: attempt to fetch an ad-related resource.
+        // Replace this logic with your actual ad blocker detection if needed.
+        const adUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+        const response = await fetch(adUrl, { method: 'HEAD' });
+        // If the fetch fails (response.ok is false), assume an ad blocker is active.
+        setAdBlocked(!response.ok);
+      } catch (err: unknown) {
+        // On error (possibly blocked by an ad blocker), assume ad blocking is enabled.
+        setAdBlocked(true);
       }
-    });
-    
-    // Cleanup function
-    return () => {
-      window.open = originalWindowOpen;
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [iframeRef]);
+    }
+
+    checkAdBlocker();
+  }, []);
+
+  return adBlocked;
 }

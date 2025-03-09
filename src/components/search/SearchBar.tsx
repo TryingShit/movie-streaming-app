@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
-import { MagnifyingGlassIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { Cross2Icon } from '@radix-ui/react-icons';
 import { searchContent } from '@/lib/services/tmdb';
 import { ContentType, TMDbSearchResult, SelectedContent } from '@/types';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { getImageUrl } from '@/lib/services/tmdb';
 import { Badge } from '@/components/ui/badge';
 
@@ -152,5 +150,5 @@ export function SearchBar({ contentType, onSelectContent }: SearchBarProps) {
         </div>
       )}
     </div>
-  );
+  )
 }
